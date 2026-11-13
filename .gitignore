@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.py[cod]
+profile.json
+private/
+.env
+passpoli.json
+career-settings.json
+data/
+*.log
+.DS_Store
+.browser*

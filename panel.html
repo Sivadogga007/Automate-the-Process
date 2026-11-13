@@ -1,0 +1,127 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Career Desk · Local</title><style>
+:root{font-family:system-ui,sans-serif;color:#182838;background:#f0f4f7}body{margin:0}main{max-width:1000px;margin:40px auto;padding:0 24px}header{display:flex;justify-content:space-between;align-items:center}h1{font-size:32px;margin:6px 0}.muted{color:#526574;font-size:14px}.badge{background:#d9f4e5;padding:7px 12px;border-radius:20px;font-size:13px}section{background:white;border:1px solid #dae3e9;border-radius:14px;padding:24px;margin:20px 0}h2{font-size:19px;margin-top:0}.tasks{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.task{padding:18px;border:1px solid #cbd8e2;border-radius:10px;cursor:pointer}.task:has(input:checked){border:2px solid #2467b5;background:#edf5ff}.task small{display:block;margin-top:10px;color:#526574}.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}label{display:block;font-size:14px;font-weight:600}input,textarea,select{box-sizing:border-box;font:inherit;margin-top:7px;border:1px solid #bbcbd7;border-radius:7px;padding:10px;width:100%}input[type=radio],input[type=checkbox]{width:auto}textarea{min-height:85px}button{border:0;background:#185ca9;color:white;font:inherit;padding:12px 20px;border-radius:8px;cursor:pointer}button.secondary{background:#e7edf3;color:#182838}.actions{display:flex;gap:12px;align-items:center;margin:20px 0}#notice{white-space:pre-wrap;padding:16px;border-radius:8px;background:#e9f1fa}#notice.error{background:#fff0ec;color:#922c19}.hidden{display:none}small{font-weight:400}pre{white-space:pre-wrap}summary{cursor:pointer;font-weight:600;margin:14px 0}@media(max-width:700px){.grid,.tasks{grid-template-columns:1fr}}
+</style></head><body><main><header><div><div class="muted">YOUR CAREER WORKSPACE</div><h1>Choose what to do today</h1></div><span class="badge">Local on this computer</span></header>
+<section><h2>1. Select a task</h2><div class="tasks"><label class="task"><input type="radio" name="task" value="network" checked> Connection requests<small>Choose recruiters, alumni, managers, faculty or professionals. Personal details optional.</small></label><label class="task"><input type="radio" name="task" value="jobs"> Easy Apply jobs<small>Find LinkedIn jobs, fill supported forms, and submit only eligible applications.</small></label><label class="task"><input type="radio" name="task" value="career"> Career workspace<small>Evaluate jobs, draft applications and prepare for interviews. No submissions.</small></label></div></section>
+<section id="contactOptions"><h2>Who should we connect with?</h2><div class="grid"><label><input type="checkbox" name="contact_category" value="recruiters" checked> Recruiters</label><label><input type="checkbox" name="contact_category" value="iitb_ieor_alumni" checked> IIT Bombay IEOR alumni</label><label><input type="checkbox" name="contact_category" value="managers" > Hiring managers / team leads</label><label><input type="checkbox" name="contact_category" value="iitb_alumni" > IIT Bombay alumni — any department</label><label><input type="checkbox" name="contact_category" value="professionals" > Professionals in my target roles</label></div><label>Custom contact types<textarea id="custom_contact_types" placeholder="Quantitative researchers&#10;NIT Warangal alumni"></textarea><small>Enter one group per line. Use these on their own or alongside the checked groups. Remove a line to stop searching for that group.</small></label><p class="muted">Choose any combination. Matching uses your editable target roles below. Alumni require supporting affiliation evidence. Any department includes IEOR.</p></section><section><h2>2. Search preferences</h2><p class="muted">Suggested defaults are editable. Your saved answers take priority.</p><div class="grid"><label>Target roles<textarea id="target_roles" placeholder="Data Scientist&#10;Software Engineer"></textarea><small>Add or replace any role, one per line—for example Product Manager or Quantitative Analyst.</small></label><label>Preferred locations<textarea id="locations" placeholder="Mumbai, India&#10;Berlin, Germany"></textarea><small>One location per line, highest priority first.</small></label><label>Connection target / application limit<input id="limit" type="number" min="1" max="100" value="15"><small id="limitHelp">Verified invitations to send. Skipped profiles do not use this target.</small></label><label>Passpoli username<input id="passpoli_username" placeholder="25m1234" autocomplete="username"><small>Saved locally. Host and model URLs are automatic. No password is stored.</small></label></div></section>
+<section><h2>3. Personal information</h2><p class="muted" id="profileHelp">Optional for connections. You can fill this later; no background will be invented.</p><details id="personal"><summary>Add or update personal details</summary><div class="grid"><label>Full name<input id="name" placeholder="Alex Kumar"></label><label>LinkedIn profile URL<input id="linkedin_url" placeholder="https://www.linkedin.com/in/alex-kumar-123/"><small>LinkedIn → Me → View Profile → copy address.</small></label></div><h3>Education</h3><p class="muted">Saved qualifications are filled automatically. Add one qualification per entry. Unknown facts stay blank; examples are not submitted answers.</p><div id="educationRows"></div><button type="button" class="secondary" id="addEducation">+ Add qualification</button><p id="legacyEducation" class="muted"></p>
+<h3>Work experience</h3><div class="grid"><label>Total professional experience (years)<input id="experience_years" type="number" min="0" max="80" step="0.1" placeholder="2.5"><small>Exclude internships. Enter 0 if none.</small></label><label>Current / most recent job title<input id="experience_latest_role" placeholder="Software Engineer"><small>Enter none if you have not held a job.</small></label><label>Current / most recent employer<input id="experience_latest_employer" placeholder="Example Company"></label><label>Main responsibilities<textarea id="experience_summary" placeholder="Built Python APIs and maintained SQL pipelines"></textarea><small>Describe work you actually did; do not include skills you have not used.</small></label></div><p id="legacyExperience" class="muted"></p>
+<h3>Availability and work authorization</h3><div class="grid"><label>Earliest start date<input id="availability" placeholder="2027-07-01"><small>YYYY-MM-DD, immediately, or unknown.</small></label><label>Countries where you can currently work<textarea id="authorized_countries" placeholder="India&#10;Canada"></textarea><small>One country per line. Enter none if no countries.</small></label><label>Do you need employer visa sponsorship?<select id="needs_sponsorship"><option value="">Not provided</option><option value="yes">Yes</option><option value="no">No</option><option value="unknown">Unknown</option></select><small>For any of your target countries.</small></label><label>Country-specific visa restrictions<textarea id="authorization_details" placeholder="Need sponsorship in Germany; authorized in India"></textarea><small>Only add details that apply to you.</small></label></div></details><div id="jobFields" class="hidden"><h2>Application contact and résumé</h2><div class="grid"><label>Application email<input id="email" type="email" placeholder="alex@example.com"></label><label>Phone with country code<input id="phone" placeholder="+91 9876543210"></label><label>Current city<input id="current_city" placeholder="Mumbai, India"></label><label>PDF résumé<input id="upload" type="file" accept="application/pdf"><small>Copied into this app's private folder.</small></label><label>Selected résumé path<input id="resume_path" readonly></label></div><p class="muted">Missing form facts prompt you in the task terminal. Answer there to save the fact and continue, or type skip. Unsupported controls and uncertain eligibility still stop or defer the application. External employer sites are not submitted.</p></div></section>
+<section><h2>LinkedIn sign-in</h2><p class="muted">The app reuses its Chrome login session. Optionally save credentials in this computer’s system keychain for when LinkedIn requires a fresh login. Passwords are not saved in your profile or ZIP. LinkedIn may still require two-factor verification.</p><div class="grid"><label>LinkedIn login email or phone<input id="login_username" autocomplete="username" placeholder="alex@example.com"></label><label>LinkedIn password<input id="login_password" type="password" autocomplete="new-password" placeholder="Only enter to save or update"></label></div><div class="actions"><button class="secondary" id="saveLogin">Save in system keychain</button><button class="secondary" id="removeLogin">Remove saved credentials</button><span id="loginStatus" class="muted"></span></div></section><section><h2>4. Run the task</h2><label><input id="preview" type="checkbox"> Preview only (do not send or submit)</label><p class="muted">Save settings, then start. Complete LinkedIn sign-in in Chrome when requested and confirm here. Close old app Chrome windows before starting.</p><div class="actions"><button id="save">Save settings</button><button id="start">Start connections</button><button id="refresh" class="secondary">Refresh results</button></div><div id="notice" role="status">Saved details and suggested search settings are prefilled. Edit them, then choose a task. Personal examples are placeholders, not facts.</div><p id="currentProfile" role="status">No active profile.</p><button id="skipProfile" class="secondary" disabled>Skip current profile</button><section aria-label="Task controls">
+<p id="taskState" role="status">No task running.</p>
+<div class="grid" aria-label="Current batch totals">
+<p>Sent <strong id="count_sent">0</strong></p>
+<p>Skipped <strong id="count_skipped">0</strong></p>
+<p>Needs review <strong id="count_review">0</strong></p>
+<p>Already pending <strong id="count_pending">0</strong></p>
+<p>Headline checks <strong id="count_headlines_checked">0</strong></p>
+<p>Profile reads completed <strong id="count_profile_reads_completed">0</strong></p>
+<p>Profile reads started <strong id="count_profile_reads_started">0</strong></p>
+<p>Unavailable <strong id="count_unavailable">0</strong></p>
+<p>Uncertain <strong id="count_uncertain">0</strong></p>
+</div><p id="readProgress" role="status"></p>
+<div class="actions"><button id="stopTask"  class="secondary" disabled>Stop task</button></div>
+<div id="taskQuestion" class="hidden">
+<p id="taskPrompt"></p><p id="taskContext"></p>
+<label id="taskAnswerLabel">Answer<input id="taskAnswer" autocomplete="off"></label>
+<div class="actions"><button id="answerTask">Continue</button><button id="nextBatch" class="secondary">Run another batch</button><button id="closeTask" class="secondary">Finish and close Chrome</button></div>
+</div>
+<details><summary>Live task log</summary><pre id="taskLogs"></pre></details>
+</section><pre id="status"></pre></section></main><script>
+const token='__APP_TOKEN__',fields=['name','linkedin_url','availability','email','phone','current_city','resume_path'];
+const el=id=>document.getElementById(id);const task=()=>document.querySelector('[name=task]:checked').value;
+function notice(text,error=false){el('notice').textContent=text;el('notice').className=error?'error':''}
+async function api(path,data){const options={headers:{'X-App-Token':token}};if(data!==undefined){options.method='POST';if(data instanceof FormData)options.body=data;else{options.headers['Content-Type']='application/json';options.body=JSON.stringify(data)}}const r=await fetch(path,options);const v=await r.json();if(!r.ok)throw Error(v.error||'Request failed');return v}
+function change(){const jobs=task()==='jobs';el('contactOptions').classList.toggle('hidden',task()!=='network');el('jobFields').classList.toggle('hidden',!jobs);if(jobs)el('personal').open=true;el('profileHelp').textContent=jobs?'Required for applications. Supply factual details; unanswered requirements stop the form.':'Optional for connections. You can add details later.';el('limitHelp').textContent=jobs?'Maximum jobs evaluated/attempted; submissions may be fewer.':"Verified invitations to send. Skipped profiles do not use this target.";el('start').textContent=jobs?'Start Easy Apply':task()==='career'?'Open career workspace':'Start connections'}
+let loadedProfile={}, educationDirty=false, experienceDirty=false, authorizationDirty=false;
+function educationRow(value={}){
+ const row=document.createElement('div');row.className='education-row';row.original=value;row.style.cssText='border:1px solid #dae3e9;padding:16px;border-radius:8px;margin-bottom:12px';
+ const grid=document.createElement('div');grid.className='grid';row.append(grid);
+ const definitions=[['degree','Degree / qualification','M.Tech'],['field','Subject / specialization','Industrial Engineering and Operations Research'],['institution','University / institute','Example University'],['status','Study status',''],['graduation_month','Graduation month','2027-07']];
+ for(const [key,label,example] of definitions){const wrap=document.createElement('label');wrap.textContent=label;const input=document.createElement(key==='status'?'select':'input');input.dataset.key=key;
+ if(key==='status'){for(const [v,t] of [['','Not provided'],['unknown','Unknown — update when known'],['studying','Currently studying'],['completed','Completed'],['not applicable','Not applicable']]){const o=document.createElement('option');o.value=v;o.textContent=t;input.append(o)}}else{input.placeholder=example;if(key==='graduation_month')input.type='month'}
+ input.value=value[key]||(key==='status'?'unknown':'');input.oninput=()=>educationDirty=true;wrap.append(input);if(key==='graduation_month'){const note=document.createElement('small');note.textContent='Actual if completed; expected if studying. Leave blank if unknown.';wrap.append(note)}grid.append(wrap)}
+ const remove=document.createElement('button');remove.type='button';remove.className='secondary';remove.textContent='Remove qualification';remove.style.marginTop='12px';remove.onclick=()=>{row.remove();educationDirty=true};row.append(remove);el('educationRows').append(row);
+}
+el('addEducation').onclick=()=>{educationRow();educationDirty=true};
+for(const key of ['years','latest_role','latest_employer','summary'])el('experience_'+key).oninput=()=>experienceDirty=true;
+for(const id of ['authorized_countries','needs_sponsorship','authorization_details'])el(id).oninput=()=>authorizationDirty=true;
+const lines=id=>el(id).value.split('\n').map(v=>v.trim()).filter(Boolean);
+async function save(){const data={connection_limit:Number(el('limit').value),custom_contact_types:lines('custom_contact_types'),target_roles:lines('target_roles'),locations:lines('locations'),passpoli_username:el('passpoli_username').value,contact_categories:[...document.querySelectorAll('[name=contact_category]:checked')].map(e=>e.value)};for(const k of fields)data[k]=el(k).value;
+ if(educationDirty){data.education=[...document.querySelectorAll('.education-row')].map(row=>({...row.original,...Object.fromEntries([...row.querySelectorAll('[data-key]')].map(e=>[e.dataset.key,e.value.trim()]))})).filter(row=>Object.values(row).some(Boolean));}
+ if(experienceDirty){data.experience={...((typeof loadedProfile.experience==='object'&&!Array.isArray(loadedProfile.experience))?loadedProfile.experience:{})};for(const k of ['years','latest_role','latest_employer','summary'])data.experience[k]=el('experience_'+k).value.trim();}
+ if(authorizationDirty)data.work_authorization={...((typeof loadedProfile.work_authorization==='object')?loadedProfile.work_authorization:{}),authorized_countries:lines('authorized_countries'),needs_sponsorship:el('needs_sponsorship').value,details:el('authorization_details').value.trim()};
+ if(el('login_password')&&el('login_password').value){
+  try{await api('/api/login',{username:el('login_username').value,password:el('login_password').value});el('login_password').value='';await loginStatus();}catch(e){}
+ }
+ await api('/api/config',data);notice('Settings saved on this computer.');}
+el('save').onclick=()=>save().catch(e=>notice(e.message,true));el('start').onclick=async()=>{try{await save();const v=await api('/api/start',{task:task(),limit:Number(el('limit').value),preview:el('preview').checked});notice(v.message)}catch(e){notice(e.message,true)}};
+el('upload').onchange=async()=>{try{const data=new FormData();data.append('resume',el('upload').files[0]);const v=await api('/api/resume',data);el('resume_path').value=v.path;notice('Résumé copied locally. Save settings to use it.')}catch(e){notice(e.message,true)}};
+el('refresh').onclick=async()=>{try{const v=await api('/api/status');el('status').textContent=JSON.stringify(v,null,2)}catch(e){notice(e.message,true)}};
+function syncAlumni(){
+ const broad=document.querySelector('[value="iitb_alumni"]');
+ const ieor=document.querySelector('[value="iitb_ieor_alumni"]');
+ if(broad.checked)ieor.checked=false;
+ ieor.disabled=broad.checked;
+}
+document.querySelector('[value="iitb_alumni"]').addEventListener('change',syncAlumni);
+let activeQuestion=null;
+async function refreshTask(){
+ const v=await api('/api/task');
+ for(const key of ['sent','skipped','review','pending','headlines_checked','profile_reads_completed','profile_reads_started','unavailable','uncertain'])el('count_'+key).textContent=v.counts?.[key]||0;
+ const progress=v.progress||{};
+ el('readProgress').textContent=progress.name?progress.name+' — '+(progress.step||progress.state||'').replaceAll('_',' ')+(progress.sections_read?' — '+Object.entries(progress.sections_read).map(([k,n])=>k+': '+n+' characters').join(', '):''):'';
+
+ el('taskState').textContent=v.stopping&&v.running?'Stopping task…':v.running?'Task running':v.exit_code===null?'No task running.':v.exit_code===0?'Task finished.':'Task stopped. Check the live task log.';
+ el('stopTask').disabled=!v.running||v.stopping;
+ el('start').disabled=v.running;
+ el('taskLogs').textContent=v.logs.join('\n');
+ const p=v.prompt;el('taskQuestion').classList.toggle('hidden',!p);
+ if(!p){activeQuestion=null;return}
+ if(activeQuestion?.id===p.id)return;
+ activeQuestion=p;
+ const text=p.text.toLowerCase();
+ const batch=text.includes('another batch')||text.includes('type run');
+ const profile=text.includes('profile url');
+ el('taskAnswer').type=p.secret?'password':'text';
+ const optionalEnter=text.includes('press enter');
+ el('taskPrompt').textContent=profile?'Finish signing in to LinkedIn in Chrome, then confirm your own profile URL.':batch?'Batch finished. Choose whether to continue.':p.text;
+ el('taskContext').textContent=profile?'Chrome → LinkedIn → Me → View Profile. Copy that URL. Example: https://www.linkedin.com/in/alex-kumar-123/':(p.text.trim()? '':v.logs.slice(-14).join('\n'));
+ el('taskAnswerLabel').classList.toggle('hidden',batch||optionalEnter);
+ el('nextBatch').classList.toggle('hidden',!batch);el('closeTask').classList.toggle('hidden',!batch);
+ el('answerTask').classList.toggle('hidden',batch);
+ el('answerTask').textContent=profile?'Confirm signed-in account':optionalEnter?'Continue':'Submit answer';
+ el('taskAnswer').value=profile?(el('linkedin_url').value||loadedProfile.linkedin_url||''):'';
+}
+async function answerTask(value){
+ if(!activeQuestion)return;
+ try{await api('/api/task/answer',{id:activeQuestion.id,value});activeQuestion=null;el('taskAnswer').value='';el('taskQuestion').classList.add('hidden');await refreshTask()}catch(e){notice(e.message,true)}
+}
+el('answerTask').onclick=()=>answerTask(el('taskAnswerLabel').classList.contains('hidden')?'':el('taskAnswer').value);
+el('taskAnswer').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();el('answerTask').click()}});
+el('nextBatch').onclick=()=>answerTask('run');el('closeTask').onclick=()=>answerTask('close');
+el('stopTask').onclick=async()=>{try{await api('/api/task/stop',{});await refreshTask()}catch(e){notice(e.message,true)}};
+setInterval(()=>refreshTask().catch(()=>{}),1000);
+refreshTask().catch(()=>{});
+let currentAttempt=null;
+async function refreshCurrent(){
+ const {profile:p}=await api('/api/current-profile');
+ currentAttempt=p?.attempt||null;
+ el('currentProfile').textContent=p ? p.name+' — '+p.phase+(p.skip_requested?' — skip requested':'') : 'No active profile.';
+ el('skipProfile').disabled=!p||!['reading','assessing'].includes(p.phase)||Boolean(p.skip_requested);
+}
+el('skipProfile').onclick=async()=>{el('skipProfile').disabled=true;try{const v=await api('/api/skip-profile',{attempt:currentAttempt});notice(v.message);await refreshCurrent()}catch(e){notice(e.message,true)}};
+setInterval(()=>refreshCurrent().catch(()=>{el('skipProfile').disabled=true}),1000);
+refreshCurrent().catch(()=>{});
+async function loginStatus(){const v=await api('/api/login');el('login_username').value=v.username;el('loginStatus').textContent=v.saved?'Saved on this computer':'No login saved for this copy. Enter your LinkedIn email or phone and password, then choose Save in system keychain.';}
+el('saveLogin').onclick=async()=>{try{await api('/api/login',{username:el('login_username').value,password:el('login_password').value});el('login_password').value='';await loginStatus();notice('Login saved in your system keychain.')}catch(e){el('login_password').value='';notice(e.message,true)}};
+el('removeLogin').onclick=async()=>{try{await api('/api/login',{remove:true});el('login_password').value='';await loginStatus();notice('Saved credential removed. Existing Chrome sessions are unchanged.')}catch(e){notice(e.message,true)}};
+loginStatus().catch(e=>notice(e.message,true));
+for(const input of document.querySelectorAll('[name=task]'))input.onchange=change;
+api('/api/config').then(({profile:p,ssh})=>{loadedProfile=p;el('limit').value=p.connection_limit||15;el('custom_contact_types').value=(p.custom_contact_types||[]).join('\n');for(const box of document.querySelectorAll('[name=contact_category]'))box.checked=(p.contact_categories||['recruiters','iitb_ieor_alumni']).includes(box.value);syncAlumni();for(const k of fields)el(k).value=typeof p[k]==='string'?p[k]:(k==='availability'?'unknown':'');for(const k of ['target_roles','locations'])el(k).value=Array.isArray(p[k])?p[k].join('\n'):p[k]||(k==='target_roles'?'Software Engineer\nData Scientist\nOperations Research Analyst':'India');
+ const education=Array.isArray(p.education)?p.education:(p.education&&typeof p.education==='object'?[p.education]:[]);for(const row of education)educationRow(row);if(!education.length)educationRow();
+ if(typeof p.education==='string')el('legacyEducation').textContent='Previously saved education (kept unless you enter structured replacements): '+p.education;
+ const experience=p.experience&&typeof p.experience==='object'?p.experience:{};for(const k of ['years','latest_role','latest_employer','summary'])el('experience_'+k).value=experience[k]||'';
+ if(typeof p.experience==='string')el('legacyExperience').textContent='Previously saved experience (kept unless you update these fields): '+p.experience;
+ const auth=p.work_authorization&&typeof p.work_authorization==='object'?p.work_authorization:{};el('authorized_countries').value=Array.isArray(auth.authorized_countries)?auth.authorized_countries.join('\n'):'';el('needs_sponsorship').value=auth.needs_sponsorship||'unknown';el('authorization_details').value=auth.details||(typeof p.work_authorization==='string'?p.work_authorization:'');
+ el('passpoli_username').value=ssh.username||'';change()}).catch(e=>notice(e.message,true));
+</script></body></html>
